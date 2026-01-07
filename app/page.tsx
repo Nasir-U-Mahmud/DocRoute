@@ -5,6 +5,17 @@ import HowItWorks from "./components/HowItWorks";
 import Features from "./components/Features";
 import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
+import AnalyticsDebug from "./components/AnalyticsDebug";
+
+export default function Home() {
+  return (
+    <main>
+      {process.env.NODE_ENV === "development" && <AnalyticsDebug />}
+      <Hero />
+      {/* ... rest of your components */}
+    </main>
+  );
+}
 
 export default function Home() {
   return (

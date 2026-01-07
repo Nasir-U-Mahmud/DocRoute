@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Never Miss a Document Again — IRCC Checklist | DocRoute",
-  description: "Prepare IRCC-ready documents automatically for study permits and Express Entry. Organize your Canada immigration documents without stress or confusion.",
+  description: "Prepare IRCC-ready documents automatically for study permits and Express Entry.",
   keywords: ["IRCC", "Canada immigration", "study permit", "Express Entry", "document preparation"],
   authors: [{ name: "DocRoute" }],
   openGraph: {
@@ -37,9 +37,6 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-  },
-  verification: {
-    google: "your-google-verification-code", // Add your actual verification code
   },
 };
 

@@ -1,55 +1,49 @@
 "use client";
 
-import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import Script from "next/script";
 
-// Replace with your actual Google Analytics ID
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || "G-XXXXXXXXXX";
+// Your Google Analytics ID
+const GA_MEASUREMENT_ID = "G-EDBN8Q8T21";
 
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
-    dataLayer: unknown[];
+    dataLayer?: unknown[];
   }
 }
 
-// Initialize Google Analytics
 export function Analytics() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+  return (
+    <>
+      {/* Load the Google Analytics script */}
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+        strategy="afterInteractive"
+      />
+      
+      {/* Initialize Google Analytics */}
+      <Script id="google-analytics" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${GA_MEASUREMENT_ID}', {
+            page_path: window.location.pathname,
+          });
+        `}
+      </Script>
+    </>
+  );
+}
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    // Load Google Analytics script
-    const script = document.createElement("script");
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
-    script.async = true;
-    document.head.appendChild(script);
-
-    window.dataLayer = window.dataLayer || [];
-    function gtag(...args: unknown[]) {
-      window.dataLayer.push(args);
-    }
-    window.gtag = gtag;
-
-    gtag("js", new Date());
-    gtag("config", GA_MEASUREMENT_ID, {
-      page_path: pathname + searchParams.toString(),
-    });
-  }, [pathname, searchParams]);
-
-  useEffect(() => {
-    if (typeof window.gtag === "undefined") return;
-
-    const url = pathname + searchParams.toString();
+// Track page views
+export const pageview = (url: string) => {
+  if (typeof window !== "undefined" && window.gtag) {
     window.gtag("config", GA_MEASUREMENT_ID, {
       page_path: url,
     });
-  }, [pathname, searchParams]);
-
-  return null;
-}
+  }
+};
 
 // Track custom events
 export const trackEvent = (
